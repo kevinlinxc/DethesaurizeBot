@@ -1,0 +1,4 @@
+language-tool-python==2.4.5
+nltk==3.5
+praw==7.1.0
+readability==0.3.1
