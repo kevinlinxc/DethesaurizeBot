@@ -5,7 +5,7 @@ import readability
 import re
 from nltk.corpus import wordnet as wn
 import language_tool_python
-
+import os
 #Global variables
 count = 0
 limit = 2
@@ -14,17 +14,19 @@ DaleChall = 0.4
 Cole = 0.3
 OutputToReddit = True
 tool = language_tool_python.LanguageTool('en-US')
-# Open config file, used to hide username and password from git
-with open('config.json') as config_file:
-    config = json.load(config_file)
+# Open config file if running locally
+# with open('config.json') as config_file:
+#     config = json.load(config_file)['keys']
+# Open environment variables if running on Heroku
+config = os.environ
 
 # Sign into Reddit using API Key
 reddit = praw.Reddit(user_agent="DethesaurizeBot (by /u/Kevinrocks7777). Call using !dethesaurizethis or "
                                 "!dethesaurizethisbot",
-                     client_id=config['keys']['client_id'],
-                     client_secret=config['keys']['client_secret'],
-                     username=config['keys']['username'],
-                     password=config['keys']['password'])
+                     client_id=config['client_id'],
+                     client_secret=config['client_secret'],
+                     username=config['username'],
+                     password=config['password'])
 
 
 # Function that checks if the a comment is requesting the bot to come. Return True at the top for testing
