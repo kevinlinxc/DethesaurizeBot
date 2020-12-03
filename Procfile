@@ -1,1 +1,1 @@
-web: python DethesaurizeThisBot.py
+web: python src/DethesaurizeThisBot.py
