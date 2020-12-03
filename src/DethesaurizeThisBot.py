@@ -30,6 +30,8 @@ reddit = praw.Reddit(user_agent="DethesaurizeBot (by /u/Kevinrocks7777). Call us
 # Function that checks if the a comment is requesting the bot to come. Return True at the top for testing
 def check_comment(c):
     text = c.body
+    if text == '':
+        return False
     tokens = text.split()
     if "!dethesaurizethis" in tokens[0].lower() or "!dethesaurizethisbot" in tokens[0].lower():
         return True
