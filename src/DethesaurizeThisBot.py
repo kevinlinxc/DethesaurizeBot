@@ -10,11 +10,11 @@ limit = 2
 
 OutputToReddit = True
 tool = language_tool_python.LanguageTool('en-US')
-# Open config file if running locally
+print("Language tool initialized")
+
+# Get api keys from config file
 with open('config.json') as config_file:
     config = json.load(config_file)['keys']
-# Open environment variables if running on Heroku
-# config = os.environ
 
 # Sign into Reddit using API Key
 reddit = praw.Reddit(user_agent="DethesaurizeBot (by /u/Kevinrocks7777). Call using !dethesaurizethis or "
@@ -70,13 +70,14 @@ for comment in reddit.subreddit("all").stream.comments(skip_existing=True):
                 output = 'At the time of request, I don\'t see anything to dethesaurize.'
             print(f'Dethesaurized: {output}')
             matches = tool.check(output)
-            tool.correct(output)
+            output = language_tool_python.utils.correct(output,matches)
             print(f'Grammar checked: {output}')
             finalreadability = simplicity(output)
             print(f'Final readability: {finalreadability}')
             if OutputToReddit:
                 comment.reply(output)
         #if the parent is a comment
+        #todo remove code repetition
         elif isinstance(parent, praw.models.Comment):
             submission = False
             body = parent.body
@@ -86,7 +87,7 @@ for comment in reddit.subreddit("all").stream.comments(skip_existing=True):
                 output = 'At the time of request, I don\'t see anything to dethesaurize.'
             print(f'Dethesaurized: {output}')
             matches = tool.check(output)
-            tool.correct(output)
+            output = language_tool_python.utils.correct(output,matches)
             print(f'Grammar checked: {output}')
             finalreadability = simplicity(output)
             print(f'Final readability: {finalreadability}')
